@@ -161,7 +161,7 @@ Lesson01ExerciseStepPlayer.prototype = {
 
     for (var i = 1; i < this.game.n_rows; ++i) {
       for (var obstacle_pos in this.game.obstacles[i]) {
-        var obstacle = new Animator.CircleElement(
+        var obstacle = new ElementFactories.createAsteroid(
             'o' + i + obstacle_pos, grid_cell_size / 2);
         obstacle.x = (0.5 + this.game.obstacles[i][obstacle_pos]) *
           grid_cell_size;
@@ -181,6 +181,12 @@ Lesson01ExerciseStepPlayer.prototype = {
 
     for (var i = 1; i < this.game.obstacles.length; ++i) {
       for (var obstacle_pos in this.game.obstacles[i]) {
+
+        var obstacle = this._animator.getElement('o' + i + obstacle_pos);
+        var animationName = 'random';
+
+        this._animator.addAnimation(obstacle.createAnimation(animationName, 0, directions.length, 1));
+
         this._animator.addAnimation(AnimationFactories.straightMove(
               'o' + i + obstacle_pos, 0, directions.length,
               0, grid_cell_size * directions.length));
@@ -477,6 +483,7 @@ Object.assign(Lesson01.prototype, {
   getResourceLoader: function() {
     var loader = new ResourceLoader();
     loader.addImage(ElementFactories.ROBOT_IMAGE_URL);
+    // loader.addImage(ElementFactories.ASTEROIDS_IMAGE_URL);
     return loader;
   },
 });
